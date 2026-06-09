@@ -12,6 +12,7 @@
     }
   ],
   "env": {
-    "APP_STORAGE": "/tmp"
+    "APP_STORAGE": "/tmp",
+    "VIEW_COMPILED_PATH": "/tmp/views"
   }
 }
