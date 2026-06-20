@@ -33,15 +33,38 @@ class Utama extends Controller
             $proses2 == "1" ? $berhasil++ : $gagal++;
         }
         $pesanx = ["kode"=>"01", "status"=>"Proses Backup Berhasil dengan Rincian ", "berhasil"=>$berhasil, "gagal"=>$gagal];
-        Http::post(
-    'https://apiexpress-production-c1f5.up.railway.app/notifikasi-backup',
-    [
-        'channel' => 'laravel',
-        'nama' => $nama,
-        'berhasil' => $berhasil,
-        'gagal' => $gagal
-    ]
-);
+        Http::post($url, [
+    'status' => 'mulai',
+    'total' => count($arr_data)
+]);
+
+$berhasil = 0;
+$gagal = 0;
+
+foreach ($arr_data as $k) {
+
+    $arr = explode("|", $k);
+
+    $deskripsi = $arr[1];
+
+    // proses DB
+    $proses2 = $mx->tambahTransaksi(...);
+
+    $proses2 == "1" ? $berhasil++ : $gagal++;
+
+    Http::post($url, [
+        'status' => 'progress',
+        'selesai' => $berhasil + $gagal,
+        'total' => count($arr_data),
+        'deskripsi' => $deskripsi
+    ]);
+}
+
+Http::post($url, [
+    'status' => 'selesai',
+    'berhasil' => $berhasil,
+    'gagal' => $gagal
+]);
         $kodex = 200;
     }else{
         $pesanx = ["kode"=>"00", "status"=>"Proses Backup Gagal, Periksa Kembali Data Anda"];
