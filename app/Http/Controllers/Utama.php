@@ -20,6 +20,7 @@ class Utama extends Controller
     $mx = new Mdata();
     $url = "https://apiexpress-production-c1f5.up.railway.app/notifikasi-backup";
     $proses = $mx->tambahBackup($id, $nama, "laravel");
+    $done = false;
     if($proses == "1"){
         $berhasil = 0;
         $gagal = 0;
@@ -42,11 +43,16 @@ class Utama extends Controller
             'total' => count($arr_data),
             'deskripsi' => $deskripsix
         ]);
-             Http::post($url, [
-            'status' => 'selesai',
-            'berhasil' => $berhasil,
-            'gagal' => $gagal
-        ]);
+          if (!$done && ($berhasil + $gagal) == count($arr_data)) {
+
+            Http::post($url, [
+                'status' => 'selesai',
+                'berhasil' => $berhasil,
+                'gagal' => $gagal
+            ]);
+
+            $done = true;
+        }
         }
         $pesanx = ["kode"=>"01", "status"=>"Proses Backup Berhasil dengan Rincian ", "berhasil"=>$berhasil, "gagal"=>$gagal];
         $kodex = 200;
