@@ -38,4 +38,12 @@ class Utama extends Controller
     }
     return response()->json($pesanx, $kodex);
 }
+     public function kirim()
+    {
+        $response = Http::post(
+            'https://apiexpress-production-c1f5.up.railway.app/heartbeat'
+        );
+
+        return $response->json();
+    }
 }
