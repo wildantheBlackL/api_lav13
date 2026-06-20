@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Mdata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 class Utama extends Controller
 {
     public function statusAPI(){
