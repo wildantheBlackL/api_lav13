@@ -10,4 +10,3 @@ Route::get('/user', function (Request $request) {
 
 Route::get("/cekstatus", [Utama::class, "statusAPI"]);
 Route::post("/backup", [Utama::class, "backupData"]);
-Route::get('/heartbeat-test', [Utama::class, 'kirim']);

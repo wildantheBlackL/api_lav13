@@ -33,6 +33,15 @@ class Utama extends Controller
             $proses2 == "1" ? $berhasil++ : $gagal++;
         }
         $pesanx = ["kode"=>"01", "status"=>"Proses Backup Berhasil dengan Rincian ", "berhasil"=>$berhasil, "gagal"=>$gagal];
+        Http::post(
+    'https://apiexpress-production-c1f5.up.railway.app/notifikasi-backup',
+    [
+        'channel' => 'laravel',
+        'nama' => $nama,
+        'berhasil' => $berhasil,
+        'gagal' => $gagal
+    ]
+);
         $kodex = 200;
     }else{
         $pesanx = ["kode"=>"00", "status"=>"Proses Backup Gagal, Periksa Kembali Data Anda"];
@@ -40,12 +49,4 @@ class Utama extends Controller
     }
     return response()->json($pesanx, $kodex);
 }
-     public function kirim()
-    {
-        $response = Http::post(
-            'https://apiexpress-production-c1f5.up.railway.app/heartbeat'
-        );
-
-        return $response->json();
-    }
 }
